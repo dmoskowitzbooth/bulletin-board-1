@@ -11,10 +11,15 @@ class BoardsController < ApplicationController
     the_id = params.fetch("path_id")
 
     matching_boards = Board.where({ :id => the_id })
+    today = Date.today
 
     @the_board = matching_boards.at(0)
-    matching_posts=Post.where({ :board => the_id })
-    @list_of_posts=matching_posts.order({ :created_at => :desc })
+
+    matching_posts = Post.where({ :id => the_id }).where("expires_on > ?", today)
+    @list_of_posts=matching_posts.all
+
+    exp_matching_posts = Post.where({ :id => the_id }).where("expires_on < ?", today)
+    @list_of_exp_posts=exp_matching_posts.all
 
     render({ :template => "boards/show" })
   end
