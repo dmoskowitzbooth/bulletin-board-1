@@ -15,10 +15,10 @@ class BoardsController < ApplicationController
 
     @the_board = matching_boards.at(0)
 
-    matching_posts = Post.where({ :id => the_id }).where("expires_on > ?", today)
+    matching_posts = Post.where({ :board_id => the_id }).where("expires_on > ?", today)
     @list_of_posts=matching_posts.all
 
-    exp_matching_posts = Post.where({ :id => the_id }).where("expires_on < ?", today)
+    exp_matching_posts = Post.where({ :board_id => the_id }).where("expires_on < ?", today)
     @list_of_exp_posts=exp_matching_posts.all
 
     render({ :template => "boards/show" })
